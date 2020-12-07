@@ -1,0 +1,149 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Graphs
+{% endblock %}
+
+{% block main %}
+    
+    <!-- The container that will store all created graphs -->
+    <div id="container">
+            
+    </div>
+
+    <script>
+    
+    // Function creates graphs of blood sugars within selected dates and creates elements in HTML using Javascript to display them.
+    function dataList(data, days)
+    {
+        console.log(data);
+        // Iterates for the amount of days between selected start and end date.
+        for(k = 0; k < days; k++)
+        {
+            var chart = document.createElement("canvas")
+            var hours = [" 00:00:00", " 01:00:00", " 02:00:00", " 03:00:00"," 04:00:00", " 05:00:00", " 06:00:00", " 07:00:00"," 08:00:00", " 09:00:00", " 10:00:00", " 11:00:00"," 12:00:00", " 13:00:00", " 14:00:00", " 15:00:00"," 16:00:00", " 17:00:00", " 18:00:00", " 19:00:00", " 20:00:00", " 21:00:00", " 22:00:00"," 23:00:00"]
+            var glucosedata = [];
+            var carbdata = [];
+            var insulindata = [];
+
+            // Date string formatting
+            date = Object.keys(data[k]);
+            for(i = 0; i < hours.length; i++){
+                hours[i] = date[0].concat(hours[i]);
+            }
+            
+            // Breaks up the data (in terms of glucose, carbs, and insulin) by each day
+            for(j = 0; j <= 2; j++)
+            {
+                for(i = 0; i < data[k][date[0]][j].length; i++)
+                {
+                    dict = {
+                        t : data[k][date[0]][j][i][1],
+                        y : data[k][date[0]][j][i][0].toString(),
+                    }
+                    if(j == 0)
+                    {
+                        glucosedata.push(dict);
+                    }
+                    else if(j == 1)
+                    {
+                        carbdata.push(dict);
+                    }
+                    else
+                    {
+                        insulindata.push(dict);
+                    }
+                }
+            }
+
+            var backgroundColors = [];
+            
+            // Color codes glucose points for the graph
+            for (j = 0; j < glucosedata.length; j++) 
+            {
+                // Red indicates low blood sugar
+                if (glucosedata[j]["y"] < 80) 
+                {
+                    backgroundColors.push("red");
+                } 
+                // Orange indicates high blood sugar
+                else if(glucosedata[j]["y"] > 180)
+                {
+                    backgroundColors.push("orange");
+                }
+                // Green indicates desired range for blood sugar
+                else
+                {
+                    backgroundColors.push("green");
+                }
+            }
+
+            // Creates the graph using Chart.js
+            var ctx = chart.getContext('2d');
+            var myChart = new Chart(ctx, {
+                data: {
+                    datasets: [{
+                        label: 'Glucose (mg/dL)',
+                        type: 'line',
+                        fill: false,
+                        data: glucosedata,
+                        pointBackgroundColor: backgroundColors,
+                    }, {
+                        label: "Carbs (g)",
+                        type: "bar",
+                        backgroundColor: '#01AEF0',
+                        borderColor: '#01AEF0',
+                        borderWidth: 1,
+                        data: carbdata
+                    }, {
+                        label: "Insulin (u, U-100)",
+                        type: "bar",
+                        backgroundColor: '#AAE4FA',
+                        borderColor: '#AAE4FA',
+                        borderWidth: 1,
+                        data: insulindata
+                    }],
+                },
+                options: {
+                    elements: {
+                        point:{
+                            radius: 3
+                        }
+                    },
+                    title: {
+                        text: 'Chart.js Time Scale'
+                    },
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                unit: 'hour'
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Date'
+                                }
+                            }],
+                        yAxes: [{
+                            display: true,
+                            ticks: {
+                                min: 0,
+                                max: 400,
+                            }
+                        }],
+                    },
+                }
+            });
+            // Creates new elements and appends the container to display graphs.
+            var node = document.createTextNode(date[0]);
+            var para = document.createElement("p")
+            para.setAttribute("id", "para");
+            para.appendChild(node);
+            document.getElementById("container").appendChild(para);
+            document.getElementById("container").appendChild(chart);
+        }    
+    }
+    // Takes in passed in data to create graphs.
+    dataList({{  data|safe }}, {{  days|safe  }})
+    </script>
+{% endblock %}

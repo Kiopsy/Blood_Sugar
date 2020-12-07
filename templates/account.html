@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Account
+{% endblock %}
+
+{% block main %}
+    <!-- Account Page -->
+
+    <h1 class="title">Full Name: {{ details[3] }}</h1>
+    <div></div>
+    <h4 class="heading">Username: {{ details[1] }}</h4>
+    <div></div>
+    <p class="para">Label: {{ details[4] }}</p>
+    <div></div>
+    <p class="para">Description: {{ details[5] }}</p>
+    <div></div>
+    <a href="/accountdetails">Change Description</a>.
+    <div></div>
+    <a href="/changepassword">Change Password</a>.
+
+{% endblock %}

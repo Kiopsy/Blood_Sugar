@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Dates
+{% endblock %}
+
+{% block main %}
+    <!-- Date selection form -->
+
+    <form id="dateform" action="/dates" method="post">
+        <label class="datelabels" for="start">Start date:</label>
+        <input class="datecomponents" type="date" id="start_date" name="trip-start" min="" max="">
+        <label class="datelabels" for="end">End date:</label>
+        <input class="datecomponents" type="date" id="end_date" name="trip-end" min="" max="">
+        <button class="button" type="submit">Submit</button>
+    </form>
+
+    <script>
+
+        function makeDate(date)
+        {
+            var dd = String(date.getDate()).padStart(2, '0');
+            var mm = String(date.getMonth() + 1).padStart(2, '0');
+            var yyyy = date.getFullYear();
+            return yyyy + "-" + mm + "-" + dd;
+        }
+
+        var today = new Date();
+        
+        var yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        var min = new Date();
+        min.setMonth(min.getMonth() - 3);  
+        min.setDate(min.getDate() + 1); 
+        
+        today = makeDate(today);
+        yesterday = makeDate(yesterday);
+        min = makeDate(min);
+        
+        console.log(today);
+        console.log(yesterday);
+        console.log(min);
+
+        document.getElementById("start_date").setAttribute("max", yesterday);
+        document.getElementById("end_date").setAttribute("max", today);
+        document.getElementById("start_date").setAttribute("min", min);
+        document.getElementById("end_date").setAttribute("min", min);
+        document.getElementById("start_date").setAttribute("value", yesterday);
+        document.getElementById("end_date").setAttribute("value", today);
+    </script>
+{% endblock %}

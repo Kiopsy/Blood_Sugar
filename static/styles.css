@@ -1,0 +1,127 @@
+*
+{
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+}
+
+.body 
+{ 
+    background-color: #0C78BF;
+}
+
+.navbar-nav .nav-item .nav-link 
+{
+    font-weight: bold;
+    font-size: 125%;
+    color: #AAE4FA;
+    margin-bottom: 5px;
+}
+
+.navbar-nav .nav-item .nav-link:hover 
+{
+    font-weight: bold;
+    font-size: 125%;
+    color: white;
+    margin-bottom: 5px;
+    text-decoration: underline;
+}
+
+.navbar
+{
+    margin-bottom: 60px;
+    /* Shadow values from https://www.w3schools.com/css/css3_buttons.asp */
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+nav .navbar-brand .white
+{
+    color: white;
+    font-size: 150%;
+}
+
+nav .navbar-brand .white:hover
+{
+    color: white;
+    font-size: 150%;
+    text-decoration: underline;
+}
+
+.container
+{
+    padding: 100px;
+    border: 20px solid #AAE4FA;
+    background-color:white;
+    width: 100%;
+    /* Shadow values from https://www.w3schools.com/css/css3_buttons.asp */
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+#para
+{
+    color:  #0C78BF;
+    font-size: 150%;
+    width: 50%;
+    font-weight: bold;
+}
+
+#dateform
+{
+    text-align: center;
+}
+
+.datecomponents
+{
+    margin-right: 50px;
+}
+
+.datelabels
+{
+    margin-right: 10px;
+}
+
+.title
+{
+    color:  #0C78BF;
+    margin-bottom: 20px;
+}
+
+.heading
+{
+    color: #01AEF0;
+    margin-left: 50px;
+    margin-bottom: 20px;
+}
+
+.para
+{
+    margin-left: 100px;
+}
+
+.button
+{
+    background-color: #01AEF0; 
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.button:hover
+{
+    background-color: #AAE4FA; 
+}
+
+.footer
+{
+    text-align: center;
+    margin-top: 50px;
+    color: white;
+}
+
+#dexcomlink
+{
+    color: #AAE4FA;
+}
