@@ -1,5 +1,6 @@
-from flask import redirect, render_template, request, session
+from flask import flash, redirect, render_template, request, session
 from functools import wraps
+from datetime import date, timedelta, datetime
 
 def login_required(f):
     """
@@ -10,7 +11,7 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if session.get("user_id") is None:
-            return redirect("/login")
+            return redirect("/")
         return f(*args, **kwargs)
     return decorated_function
 
@@ -25,3 +26,12 @@ def sciToNum(sciNum):
         return number 
     else:
         return sciNum
+
+# https://stackoverflow.com/questions/16870663/how-do-i-validate-a-date-string-format-in-python
+# Checks whether date is in the right format
+def checkDate(date):
+    try:
+        datetime.strptime(date, '%Y-%m-%d')
+        return True
+    except ValueError:
+        return False

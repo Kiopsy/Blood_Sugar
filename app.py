@@ -1,9 +1,9 @@
 import os
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from flask import Flask, flash, redirect, render_template, request, session
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import sciToNum, login_required
+from helpers import sciToNum, login_required, checkDate
 
 
 import sqlite3
@@ -25,7 +25,6 @@ def add_header(r):
 app.config.update(
     TESTING=True,
     SECRET_KEY=b'pk_aafb84848ef145/#2sa'
-
 )
 
 CLIENT_ID = "F96Uu0m1gIR85MYFWEu25yl2ul3Tjjeo"
@@ -46,6 +45,11 @@ def dates():
     if request.method == "POST":
         global start_date, end_date, start_datetime, end_datetime
 
+        # Ensure dates are in date format
+        if not checkDate(request.form.get("trip-start")) or not checkDate(request.form.get("trip-end")):
+            flash("Must input the date format: YYYY-MM-DD")
+            return render_template("dates.html")
+
         # Ensure start date was submitted
         if not request.form.get("trip-start"):
             flash("Must provide start date!")
@@ -62,12 +66,30 @@ def dates():
         start = start_date.split("-")
         end = end_date.split("-")
 
+        
+        # Dexcom only has up to 3 months of data so we need to ensure input dates comes after that
+
+        # https://www.kite.com/python/answers/how-to-get-a-date-six-months-from-today-using-datetime-in-python
+        # This finds the date 3 months before the current date
+        today = datetime.now()
+        min_day = today.day
+        min_month = (today.month - 3) % 12
+        min_year = today.year + ((today.month - 3) // 12)
+
+        min = str(datetime(min_year, min_month, min_day)).split(" ")[0].split("-")
+
         start_datetime = date(int(start[0]), int(start[1]), int(start[2])) 
-        end_datetime = date(int(end[0]), int(end[1]), int(end[2])) 
+        end_datetime = date(int(end[0]), int(end[1]), int(end[2]))
+        min_datetime = date(int(min[0]), int(min[1]), int(min[2])) 
 
         # Ensure start date comes before end date
         if end_datetime < start_datetime:
             flash("Start date must be before end date!")
+            return render_template("dates.html")
+
+        # Ensure start date and end date are after the 3 month minimum date for Dexcom
+        if end_datetime < min_datetime or start_datetime < min_datetime:
+            flash(f"Start date and end date must come after {min_datetime}!")
             return render_template("dates.html")
     
         start_date = start_date + "T00:00:00"

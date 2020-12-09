@@ -63,6 +63,14 @@ nav .navbar-brand .white:hover
     font-weight: bold;
 }
 
+#datelabels
+{
+    color:  #0C78BF;
+    font-size: 150%;
+    font-weight: bold;
+    text-align: center;
+}
+
 #dateform
 {
     text-align: center;
